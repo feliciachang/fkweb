@@ -1,0 +1,99 @@
+<template>
+  <div id="LoginForm">
+    <h1>Log In to Your Account</h1>
+    <p v-if="error">Your email or password is invalid</p>
+    <input name="email" v-model="email" placeholder="Email" />
+    <br />
+    <br />
+    <input
+      style="-webkit-text-security: circle"
+      name="email"
+      placeholder="Password"
+      v-model="password"
+    />
+    <br />
+    <button v-on:click="login">Log In</button>
+  </div>
+</template>
+
+<script>
+import UserSession from "../../api/session";
+
+export default {
+  name: "LoginForm",
+  props: {
+    msg: String
+  },
+  data: () => {
+    return { email: "", password: "", error: false };
+  },
+  methods: {
+    async login(event) {
+      event.preventDefault();
+      try {
+        if(this.email == "" || this.password == ""){
+          this.error = true;
+        }
+        console.log(this.email);
+        const userSession = new UserSession();
+        console.log(userSession);
+        const user = await userSession.login(this.email, this.password);
+        if (user) {
+          console.log("loggedin");
+          this.error = false;
+          this.$router.push( "dashboard" );
+        } else {
+          this.error = true;
+        }
+      } catch (error) {
+        console.log("error", error);
+        this.error = false;
+      }
+    }
+  }
+};
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped>
+h1 {
+  font-weight: lighter;
+}
+p {
+  color: red;
+}
+button {
+  margin-top: 50px;
+  width: 70%;
+  height: 50px;
+  background-color: #ce596b;
+  border: none;
+  color: white;
+  font-size: 18px;
+  border-radius: 5px;
+}
+input {
+  border: 0;
+  border-bottom: 1px solid gray;
+  outline: 0;
+  height: 30px;
+  width: 70%;
+  font-size: 18px;
+}
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+li {
+  display: inline-block;
+  margin: 0 10px;
+}
+div {
+  width: 30%;
+  background-color: white;
+  display: inline-block;
+  text-align: center;
+  padding-bottom: 60px;
+  padding-top: 20px;
+}
+</style>
