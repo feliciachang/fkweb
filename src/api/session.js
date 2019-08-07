@@ -8,8 +8,9 @@ export default class UserSession {
     this.tokens = new TokenStorage();
   }
 
-  authenticated() {
-    return this.tokens.authenticated();
+  async authenticated() {
+    const user = await FKApi.authenticated();
+    return user;
   }
 
   async getCurrentUser() {
@@ -20,14 +21,14 @@ export default class UserSession {
   async login(email, password) {
     try {
       const auth = await FKApi.login(email, password);
-      this.tokens.setToken(auth);
+      this.tokens.setToken(user);
       return auth;
     } catch (err) {
       return null;
     }
   }
-
-  async logout() {
-    this.tokens.clear();
-  }
+  //
+  // async logout() {
+  //   this.tokens.clear();
+  // }
 }

@@ -11,7 +11,8 @@ import TokenStorage from "./tokens";
 class FKApi {
   constructor() {
     this.baseUrl = "https://api.fkdev.org";
-    this.tokens = new TokenStorage();
+    this.token = new TokenStorage();
+    this.handleResponse = this.handleResponse.bind(this);
   }
 
   login(email, password) {
@@ -23,25 +24,43 @@ class FKApi {
         email: email,
         password: password
       }
-    }).then(handleResponse);
+    }).then(this.handleResponse);
+  }
 
-    function handleResponse(response){
-      if(response.status == 204){
-        this.tokens.setToken(response.headers.authorization);
-        return response.headers.authorization;
-      }
-      else {
-        throw new Error("Log In Failed")
-      }
+  handleResponse(response){
+    try {
+      console.log("login function response", response);
+       if(response.status == 204){
+         this.token.setToken(response.headers.authorization);
+         return response.headers.authorization;
+       }
+       else {
+         return null;
+         throw new Error("Log In Failed")
+       }
+
+    }
+    catch (err) {
+      console.log("error");
+      console.log(err);
+    }
+  }
+
+  authenticated (){
+    if(this.token.authenticated()){
+      return true;
+    }
+    else{
+      return false;
     }
   }
 
   getCurrentUser() {
-    console.log("passing in", this.tokens);
+    const token = this.token.getToken();
     return axios({
       method: "GET",
       url: this.baseUrl + "/user",
-      headers: {"Content-Type": "application/json", Authorization: this.tokens.getToken()},
+      headers: {"Content-Type": "application/json", Authorization: token},
     }).then(handleResponse);
 
     function handleResponse(response){

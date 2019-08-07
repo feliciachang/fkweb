@@ -35,11 +35,9 @@ export default {
         if(this.email == "" || this.password == ""){
           this.error = true;
         }
-        console.log(this.email);
         const userSession = new UserSession();
-        console.log(userSession);
         const auth = await userSession.login(this.email, this.password);
-        if (auth != "") {
+        if (userSession.authenticated()) {
           this.userToken = auth;
           this.error = false;
           this.$router.push({ name: "dashboard"});
@@ -47,7 +45,6 @@ export default {
           this.error = true;
         }
       } catch (error) {
-        console.log("error", error);
         this.error = false;
       }
     }
