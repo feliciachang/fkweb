@@ -1,7 +1,7 @@
 <template>
   <div class="dashboard">
-    <img alt="Vue logo" src="../assets/logo.png" />
     <h1> Dashboard </h1>
+    <h1> {{user.name}} </h1>
   </div>
 </template>
 
@@ -11,6 +11,9 @@ import HelloWorld from "@/components/HelloWorld.vue";
 
 export default {
   name: "dashboard",
+  props: {
+    user: {}
+  },
   components: {
     HelloWorld
   }

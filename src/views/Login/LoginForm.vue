@@ -18,6 +18,7 @@
 
 <script>
 import UserSession from "../../api/session";
+import FKApi from "../../api/api";
 
 export default {
   name: "LoginForm",
@@ -25,7 +26,7 @@ export default {
     msg: String
   },
   data: () => {
-    return { email: "", password: "", error: false };
+    return { email: "", password: "", user: {}, error: false };
   },
   methods: {
     async login(event) {
@@ -37,11 +38,13 @@ export default {
         console.log(this.email);
         const userSession = new UserSession();
         console.log(userSession);
-        const user = await userSession.login(this.email, this.password);
-        if (user) {
-          console.log("loggedin");
+        const auth = await userSession.login(this.email, this.password);
+        if (auth != "") {
+          this.userToken = auth;
+          const user = await FKApi.getCurrentUser();
+          console.log("this is user", user);
           this.error = false;
-          this.$router.push( "dashboard" );
+          this.$router.push({ name: "dashboard", params: {user: user}});
         } else {
           this.error = true;
         }

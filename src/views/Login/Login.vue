@@ -26,13 +26,6 @@ export default {
 </script>
 
 <style>
-#app {
-  font-family: "Avenir";
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  margin-top: 60px;
-}
 html,
 body {
   width: 100%;

@@ -15,9 +15,9 @@ export default class UserSession {
   async login(email, password) {
     try {
       console.log("calledLoginfunction");
-      await FKApi.login(email, password);
+      const auth = await FKApi.login(email, password);
 
-      return true;
+      return auth;
     } catch (err) {
       return null;
     }

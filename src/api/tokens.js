@@ -14,6 +14,7 @@ export default class TokenStorage {
     setToken(token) {
         window.localStorage['fktoken'] = JSON.stringify(token);
         this.token = token;
+        console.log(this.token);
     }
 
     clear() {
