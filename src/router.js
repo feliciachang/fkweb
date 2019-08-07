@@ -32,8 +32,7 @@ export default new Router({
     {
       path: "/dashboard",
       name: "dashboard",
-      component: Dashboard,
-      props: true
+      component: Dashboard
     }
   ]
 });

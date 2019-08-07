@@ -41,10 +41,8 @@ export default {
         const auth = await userSession.login(this.email, this.password);
         if (auth != "") {
           this.userToken = auth;
-          const user = await FKApi.getCurrentUser();
-          console.log("this is user", user);
           this.error = false;
-          this.$router.push({ name: "dashboard", params: {user: user}});
+          this.$router.push({ name: "dashboard"});
         } else {
           this.error = true;
         }

@@ -12,11 +12,15 @@ export default class UserSession {
     return this.tokens.authenticated();
   }
 
+  async getCurrentUser() {
+    const user = await FKApi.getCurrentUser();
+    return user;
+  }
+
   async login(email, password) {
     try {
-      console.log("calledLoginfunction");
       const auth = await FKApi.login(email, password);
-
+      this.tokens.setToken(auth);
       return auth;
     } catch (err) {
       return null;

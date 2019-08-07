@@ -1,21 +1,26 @@
 <template>
   <div class="dashboard">
     <h1> Dashboard </h1>
-    <h1> {{user.name}} </h1>
+    <h1> {{this.user.name}} </h1>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
 import HelloWorld from "@/components/HelloWorld.vue";
+import UserSession from "../api/session";
 
 export default {
   name: "dashboard",
-  props: {
-    user: {}
+  data: () => {
+    return {user: {}}
   },
-  components: {
-    HelloWorld
+  async beforeCreate() {
+      const userSession = new UserSession();
+      if(userSession.authenticated()){
+        this.user = await userSession.getCurrentUser();
+        console.log(this.user.name);
+      }
   }
-};
+}
 </script>

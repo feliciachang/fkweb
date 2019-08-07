@@ -7,11 +7,11 @@ import TokenStorage from "./tokens";
 // class APIError extends BaseError {}
 // class AuthenticationError extends APIError {}
 
-let accessToken = null;
 
 class FKApi {
   constructor() {
     this.baseUrl = "https://api.fkdev.org";
+    this.tokens = new TokenStorage();
   }
 
   login(email, password) {
@@ -27,7 +27,7 @@ class FKApi {
 
     function handleResponse(response){
       if(response.status == 204){
-        accessToken = response.headers.authorization;
+        this.tokens.setToken(response.headers.authorization);
         return response.headers.authorization;
       }
       else {
@@ -36,15 +36,12 @@ class FKApi {
     }
   }
 
-  isLoggedIn() {
-    return accessToken;
-  }
-
   getCurrentUser() {
+    console.log("passing in", this.tokens);
     return axios({
       method: "GET",
       url: this.baseUrl + "/user",
-      headers: {"Content-Type": "application/json", Authorization: accessToken},
+      headers: {"Content-Type": "application/json", Authorization: this.tokens.getToken()},
     }).then(handleResponse);
 
     function handleResponse(response){
