@@ -47,12 +47,12 @@ class FKApi {
   }
 
   authenticated (){
-    if(this.token.authenticated()){
-      return true;
-    }
-    else{
-      return false;
-    }
+    return this.token.authenticated();
+  }
+
+  logout(){
+    this.token.clear();
+    console.log("successfully cleared");
   }
 
   getCurrentUser() {
@@ -74,4 +74,4 @@ class FKApi {
   }
 }
 
-export default new FKApi;
+export default FKApi;

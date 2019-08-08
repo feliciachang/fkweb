@@ -17,7 +17,6 @@
 </template>
 
 <script>
-import UserSession from "../../api/session";
 import FKApi from "../../api/api";
 
 export default {
@@ -35,9 +34,11 @@ export default {
         if(this.email == "" || this.password == ""){
           this.error = true;
         }
-        const userSession = new UserSession();
-        const auth = await userSession.login(this.email, this.password);
-        if (userSession.authenticated()) {
+        const api = new FKApi();
+        const auth = await api.login(this.email, this.password);
+        const isAuthenticated = await api.authenticated();
+        if (isAuthenticated) {
+          console.log('authenticated');
           this.userToken = auth;
           this.error = false;
           this.$router.push({ name: "dashboard"});

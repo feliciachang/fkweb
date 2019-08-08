@@ -1,13 +1,13 @@
 <template>
   <div class="dashboard">
+  <button v-on:click="logout">Log out</button>
     <h1> Dashboard </h1>
     <h1> {{this.user.name}} </h1>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import UserSession from "../api/session";
+import FKApi from "../api/api";
 
 export default {
   name: "dashboard",
@@ -15,11 +15,17 @@ export default {
     return {user: {}}
   },
   async beforeCreate() {
-      const userSession = new UserSession();
-      if(userSession.authenticated()){
-        this.user = await userSession.getCurrentUser();
-        console.log(this.user.name);
+      const api = new FKApi();
+      if(api.authenticated()){
+        this.user = await api.getCurrentUser();
       }
+  },
+  methods: {
+    logout(){
+      const api = new FKApi();
+      api.logout();
+      this.$router.push({name: "login"});
+    }
   }
 }
 </script>
