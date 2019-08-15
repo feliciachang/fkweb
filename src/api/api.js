@@ -1,16 +1,10 @@
 import axios from "axios";
 
-
-// import { BaseError } from "../common/errors";
-// import { API_HOST } from "../secrets";
 import TokenStorage from "./tokens";
-// class APIError extends BaseError {}
-// class AuthenticationError extends APIError {}
-
 
 class FKApi {
   constructor() {
-    this.baseUrl = "https://api.fkdev.org";
+    this.baseUrl = "http://127.0.0.1:8080";
     this.token = new TokenStorage();
     this.handleResponse = this.handleResponse.bind(this);
   }
@@ -53,6 +47,24 @@ class FKApi {
   logout(){
     this.token.clear();
     console.log("successfully cleared");
+  }
+
+  getStations() {
+    const token = this.token.getToken();
+    return axios({
+      method: "GET",
+      url: this.baseUrl + "/stations",
+      headers: {"Content-Type": "application/json", Authorization: token}
+    }).then(handleResponse);
+
+    function handleResponse(response){
+      if(response.status) {
+        return response.data;
+      }
+      else {
+        throw new Error("Get station failed")
+      }
+    }
   }
 
   getCurrentUser() {
